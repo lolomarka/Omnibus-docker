@@ -1,0 +1,8 @@
+services:
+  builder:
+    build: .
+    volumes:
+      - ./:/omnibus
+    working_dir: /build
+    privileged: true
+    command: bash --init-file omnibus-build.sh
