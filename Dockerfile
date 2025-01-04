@@ -1,4 +1,5 @@
 FROM almalinux:9
+# FROM almalinux:8
 
 RUN dnf install -y 'dnf-command(config-manager)'
 RUN dnf config-manager --set-enabled crb
@@ -16,6 +17,8 @@ RUN yum install -y git
 
 # Install the rpm-build package so omnibus will be able to build rpm packages.
 RUN yum install -y rpm-build
+
+RUN yum update -y
 
 # Install packages used when compiling ruby as specified by the ruby-install tool
 
@@ -43,14 +46,23 @@ RUN useradd builder
 
 RUN mkdir /var/cache/omnibus
 RUN chown builder:builder /var/cache/omnibus
-RUN mkdir /opt/omnibus-toolchain
-RUN chown builder:builder /opt/omnibus-toolchain
+RUN mkdir /opt/my_cpp_program
+RUN chown builder:builder /opt/my_cpp_program
+
+RUN mkdir /bin/my_cpp_program
+RUN chown builder:builder /bin/my_cpp_program
 
 
-RUN git clone https://github.com/chef/omnibus-toolchain.git
-RUN chown builder:builder /omnibus-toolchain
-WORKDIR /omnibus-toolchain
+# RUN git clone https://github.com/chef/omnibus-toolchain.git
+# RUN chown builder:builder /omnibus-toolchain
+# WORKDIR /omnibus-toolchain
+# USER builder
+
+RUN git clone https://github.com/lolomarka/omnibus-my_cpp_program.git
+RUN chown builder:builder /omnibus-my_cpp_program
+WORKDIR /omnibus-my_cpp_program
 USER builder
+
 # if a Gemfile.lock file already exists then run
 # RUN bundle install --without development
 
@@ -59,6 +71,6 @@ RUN bundle config set path 'vendor/bundle'
 RUN bundle config set without 'development'
 RUN bundle install
 
-RUN bundle exec omnibus build omnibus-toolchain
+RUN bundle exec omnibus build my_cpp_program
 
-
+USER root
