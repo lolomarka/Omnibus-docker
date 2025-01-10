@@ -1,28 +1,13 @@
 FROM almalinux:9
-# FROM almalinux:8
 
 RUN dnf install -y 'dnf-command(config-manager)'
 RUN dnf config-manager --set-enabled crb
 
-# for fs
-RUN dnf install -y mc
+RUN yum install -y git xz cmake gcc automake bison zlib-devel libyaml-devel openssl-devel gdbm-devel readline-devel ncurses-devel libffi-devel rpm-build perl perl-FindBin perl-IPC-Cmd mc
 
-# Install a build toolchain for the platform as specified by the https://github.com/postmodern/ruby-install/blob/master/share/ruby-install/ruby/dependencies.txt
-RUN yum install -y xz gcc automake bison zlib-devel libyaml-devel openssl-devel gdbm-devel readline-devel ncurses-devel libffi-devel 
-# additional
-RUN yum install -y perl perl-FindBin perl-IPC-Cmd 
-
-# Install git
-RUN yum install -y git
-
-# Install the rpm-build package so omnibus will be able to build rpm packages.
-RUN yum install -y rpm-build
+RUN yum install -y mesa-libGL-devel qt5
 
 RUN yum update -y
-
-# Install packages used when compiling ruby as specified by the ruby-install tool
-
-#RUN yum install -y gcc automake bison zlib-devel libyaml-devel openssl-devel gdbm-devel readline-devel ncurses-devel libffi-devel
 
 WORKDIR /
 
@@ -39,7 +24,6 @@ RUN make install
 
 WORKDIR /
 
-
 RUN gem install bundler
 
 RUN useradd builder
@@ -51,12 +35,6 @@ RUN chown builder:builder /opt/my_cpp_program
 
 RUN mkdir /bin/my_cpp_program
 RUN chown builder:builder /bin/my_cpp_program
-
-
-# RUN git clone https://github.com/chef/omnibus-toolchain.git
-# RUN chown builder:builder /omnibus-toolchain
-# WORKDIR /omnibus-toolchain
-# USER builder
 
 RUN git clone https://github.com/lolomarka/omnibus-my_cpp_program.git
 RUN chown builder:builder /omnibus-my_cpp_program
