@@ -48,5 +48,5 @@ RUN bundle config set without 'development'
 RUN bundle install
 
 RUN bundle exec omnibus build my_cpp_program
-
+WORKDIR /omnibus-my_cpp_program/pkg/
 USER root
