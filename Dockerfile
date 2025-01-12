@@ -5,8 +5,6 @@ RUN dnf config-manager --set-enabled crb
 
 RUN yum install -y git xz cmake gcc automake bison zlib-devel libyaml-devel openssl-devel gdbm-devel readline-devel ncurses-devel libffi-devel rpm-build perl perl-FindBin perl-IPC-Cmd mc
 
-RUN yum install -y mesa-libGL-devel qt5
-
 RUN yum update -y
 
 WORKDIR /
